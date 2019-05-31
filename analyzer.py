@@ -32,7 +32,7 @@ class GameAnalyzer(object):
         '''
         return True if len(player.moves) == move_number else False
 
-    def analyze_board(self, board, player, opposed_player):
+    def analyze_board(self, board, player, opposed_player, random_play=True):
         '''An game analyzer must be capable to detect at least the following
         board states:
 
@@ -56,7 +56,10 @@ class GameAnalyzer(object):
             return imminet_win_after
 
         if available_moves:
-            return random.choice(available_moves)
+            if random_play:
+                return random.choice(available_moves)
+            else:
+                return []
 
     def opening_rules(self, player, opposed_player):
         '''Apply some opening rules for wining approach or prevent imminent
@@ -68,7 +71,7 @@ class GameAnalyzer(object):
                                  [random.choice(self.INSIDERS)])
         elif self.match_move(player) and self.match_move(opposed_player, 1):
             # Second move of the game.
-            if opposed_player.moves[0] in self.CORNERS:
+            if opposed_player.moves[0] in self.CORNERS or opposed_player.moves[0] in self.INSIDERS:
                 return self.CENTER
             if opposed_player.moves[0] == self.CENTER:
                 return random.choice(self.CORNERS)
@@ -164,3 +167,19 @@ class GameAnalyzer(object):
         '''Returns the best position to play
         '''
         return self.analyze_board(board, player, opposed_player)
+
+
+class NoviceGameAnalyzer(GameAnalyzer):
+
+    def analyze_board(self, board, player, opposed_player):
+        '''An game analyzer must be capable to detect at least the following
+        board states:
+
+            - Imminent win or loose in one move.
+            - Check status: for
+        '''
+        available_moves = board._available_idexes()
+        return random.choice(available_moves)
+
+
+
