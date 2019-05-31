@@ -70,8 +70,7 @@ class KnowledgeBase(object):
     def _already_exist(self, game_moves):
         '''Returns `True` if those game moves already exist else `False`.
         '''
-        from itertools import ifilter
-        filtred = list(ifilter(lambda x: x.game_moves == game_moves,
+        filtred = list(filter(lambda x: x.game_moves == game_moves,
                                self.evaluated_game_results))
         return True if len(filtred) > 0 else False
 

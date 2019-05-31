@@ -24,14 +24,21 @@ from utils import prompt_for, ensure_int, get_winning_positions
 from exception import NotAvailableMoves, InvalidMove
 from knowledge_base import KnowledgeBase
 
+raw_input = input
 
 class TicTacToeGame(object):
 
-    def __init__(self):
-        self.knowledge_base = KnowledgeBase()
+    def __init__(self, game_mode=None, knowledge_base=None, choice=0):
+        self.played_games = 0
         self._board_painter = BoardPainter()
-        self.show_instructions()
+        if game_mode and knowledge_base:
+            self.knowledge_base = knowledge_base
+            self.game_mode = game_mode
+        else:
+            self.knowledge_base = KnowledgeBase()
+            self.show_instructions()
         self.load_winning_positions()
+        self.choice = choice
         self.new_game()
 
     def choose_random_player_to_start(self):
@@ -39,7 +46,11 @@ class TicTacToeGame(object):
         '''
         import random
         players = [self.game_mode.player1, self.game_mode.player2]
-        self.current_player = random.choice(players)
+        self.current_player = players[self.choice]
+        if self.choice == 0:
+            self.choice = 1
+        else:
+            self.choice = 0
 
     def get_game_mode(self):
         return self._get_game_mode()
@@ -105,18 +116,13 @@ class TicTacToeGame(object):
             self.display_game_result()
 
     def ask_for_continue_or_exit(self):
-        option = prompt_for(
-            message="Press enter to restart or `q` for exit game: ")
-        if option == 'q':
-            self.exit_game()
-        else:
-            self.new_game()
+        self.exit_game()
 
     def display_current_match(self):
-        match = "Match results: Player{0}: {1} VS Player{2}: {3} Draws: {4}. "
+        match = "Match results: Player{0}: {1}, Started:{2} VS Player{3}: {4}, Started:{5} Draws: {6}. "
         print(match.format(
-            self.game_mode.player1.name, self.game_mode.player1.wons,
-            self.game_mode.player2.name, self.game_mode.player2.wons,
+            self.game_mode.player1.name, self.game_mode.player1.wons, self.game_mode.player1.started,
+            self.game_mode.player2.name, self.game_mode.player2.wons, self.game_mode.player2.started,
             self.game_mode.draws))
 
     def display_game_result(self):
@@ -127,6 +133,11 @@ class TicTacToeGame(object):
         else:
             game_result = 'Game is Draw.'
 
+        started = self._was_first_or_secord(self.game_mode.player1)
+        if started:
+            print('Player1 started')
+        else:
+            print('Player2 started')
         print(game_result)
         print('Player: {0}: moves: {1}'.format(
             self.game_mode.player1.name, self.game_mode.player1.moves))
@@ -164,6 +175,7 @@ class TicTacToeGame(object):
                 ask_for_position = False
             except Exception as e:
                 if e.__class__ == InvalidMove:
+                    import ipdb; ipdb.set_trace();
                     print('Invalid Move!')
                 else:
                     raise e
@@ -219,6 +231,14 @@ class TicTacToeGame(object):
             self.game_moves.append(position)
             self.check_game_status()
             self.update_current_player()
+        self.update_started()
+
+    def update_started(self):
+        started = self._was_first_or_secord(self.game_mode.player1)
+        if started == 1:
+            self.game_mode.player1.started += 1
+        else:
+            self.game_mode.player2.started += 1
 
     # TODO: Don't you see a patterns here always asking for which is the
     # current player.
@@ -227,6 +247,20 @@ class TicTacToeGame(object):
             self.game_mode.player1.wons += 1
         else:
             self.game_mode.player2.wons += 1
+        loser_player = self.get_current_player_opposed()
+        if loser_player.level == 'expert':
+            loser_play_1st = self._was_first_or_secord(loser_player) == 1
+            _current_player_moves = self.current_player.moves
+            _loser_player_moves = loser_player.moves
+            loser_player.store_experience(self.game_moves, self.current_player, loser_play_1st)
+            if self.game_mode.player1 == self.current_player:
+                self.current_player.moves = _current_player_moves
+                self.game_mode.player1.moves = _current_player_moves
+                self.game_mode.player2.moves = _loser_player_moves
+            else:
+                self.current_player.moves = _loser_player_moves
+                self.game_mode.player1.moves = _loser_player_moves
+                self.game_mode.player2.moves = _current_player_moves
 
     def _was_first_or_secord(self, player):
         '''Returns `1` if the player was the first to play else `2`.
@@ -280,4 +314,11 @@ class TicTacToeGame(object):
             return _class(_param) if game_mode in [1, 3] else _class()
 
 if __name__ == '__main__':
-    TicTacToeGame()
+    # option = prompt_for(
+    #    message="Press enter to restart or `q` for exit game: ")
+    played_games = 1
+    game = TicTacToeGame()
+    while played_games < 100000:
+        game = TicTacToeGame(game_mode=game.game_mode, knowledge_base=game.knowledge_base, choice=game.choice)
+        played_games += 1
+    import ipdb; ipdb.set_trace();
