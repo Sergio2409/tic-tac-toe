@@ -37,7 +37,7 @@ class HumanVSComputer(GameMode):
 
     def __init__(self, knowledge_base=None):
         self.player1 = Human()
-        self.player2 = Computer(knowledge_base=knowledge_base)
+        self.player2 = Computer(name='MLComputer')
 
 
 class HumanVSHuman(GameMode):
@@ -47,8 +47,7 @@ class HumanVSHuman(GameMode):
 
 
 class ComputerVSComputer(GameMode):
-    def __init__(self, player1='Computer1', player2='Computer2',
-                 knowledge_base=None):
-        self.player1 = Computer(name=player1, knowledge_base=knowledge_base)
-        self.player2 = Computer(name=player2, icon=IconX(),
+    def __init__(self, player1='Novice', player2='MLComputer', knowledge_base=None):
+        self.player1 = Computer(name='Random', icon=IconX(), knowledge_base=knowledge_base, level='smart')
+        self.player2 = Computer(name='SergioML', icon=IconO(), level='expert',
                                 knowledge_base=knowledge_base)
