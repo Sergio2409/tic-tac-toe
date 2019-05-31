@@ -112,7 +112,8 @@ class TicTacToeGame(object):
         try:
             self._board.available_squares()
         except NotAvailableMoves:
-            self.game_mode.draws += 1
+            if self.winner is None:
+                self.game_mode.draws += 1
             self.display_game_result()
 
     def ask_for_continue_or_exit(self):
@@ -175,7 +176,6 @@ class TicTacToeGame(object):
                 ask_for_position = False
             except Exception as e:
                 if e.__class__ == InvalidMove:
-                    import ipdb; ipdb.set_trace();
                     print('Invalid Move!')
                 else:
                     raise e
