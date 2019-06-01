@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------
 # board_painter
 # ---------------------------------------------------------------------
-# Copyright (c) 2017 Sergio Valdes Rabelo, sergiovaldes2409@gmail.com
+# Copyright (c) 2017, 2019 Sergio Valdes Rabelo, sergiovaldes2409@gmail.com
 # All rights reserved.
 #
 # This is free software; you can redistribute it and/or modify it under the
