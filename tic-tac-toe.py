@@ -318,7 +318,7 @@ if __name__ == '__main__':
     #    message="Press enter to restart or `q` for exit game: ")
     played_games = 1
     game = TicTacToeGame()
-    while played_games < 100000:
+    while played_games < 50:
         game = TicTacToeGame(game_mode=game.game_mode, knowledge_base=game.knowledge_base, choice=game.choice)
         played_games += 1
     import ipdb; ipdb.set_trace();
