@@ -18,20 +18,20 @@ class ResutlPlot(object):
 
     def __init__(self):
         data1 = {
-            'MLPlayer1': 0,
-            'MLPlayer2': 0,
-            'Draws': 500,
-            'MLP St.': 250,
-            'RandomP St.': 250,
-            'Total': 500,
+            'MLPlayer1': 9253,
+            'RandomP': 0,
+            'Draws': 747,
+            'MLP St.': 5000,
+            'RandomP St.': 5000,
+            'Total': 10000,
         }
         data2 = {
-            'MLPlayer': 0,
+            'MLPlayer': 1546,
             'RulesPlayer': 0,
-            'Draws': 500,
-            'MLP St.': 250,
-            'RulesP St.': 250,
-            'Total': 500,
+            'Draws': 10106,
+            'MLP St.': 5826,
+            'RulesP St.': 5826,
+            'Total': 11652,
         }
         names1 = list(data1.keys())
         values1 = list(data1.values())
