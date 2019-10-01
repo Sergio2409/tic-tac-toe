@@ -25,6 +25,7 @@ class GameAnalyzer(object):
         self.CORNERS = [1, 3, 7, 9]
         self.INSIDERS = [2, 4, 8, 9]
         self.CENTER = 5
+	self.newFlag = True
 
     def match_move(self, player, move_number=0):
         '''Return True if the `move_number` is equal to the moves quantity of
