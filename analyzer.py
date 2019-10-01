@@ -22,7 +22,8 @@ class GameAnalyzer(object):
     def __init__(self, knowledge_base=False, display_analysis=False):
         self.knowledge_base = knowledge_base
         self.WINING_POSITIONS = get_winning_positions()
-        self.CORNERS = [1, 3, 7, 9]        
+        self.CORNERS = [1, 3, 7, 9]
+	self.newFlag = True
 
     def match_move(self, player, move_number=0):
         '''Return True if the `move_number` is equal to the moves quantity of
