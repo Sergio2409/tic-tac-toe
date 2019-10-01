@@ -35,6 +35,8 @@ class ResutlPlot(object):
         }
         names1 = list(data1.keys())
         values1 = list(data1.values())
+	
+	aux_var = [el for el in range(20)]
 
         names2 = list(data2.keys())
         values2 = list(data2.values())
